@@ -1,49 +1,48 @@
-"sic_all_divisons":"A-J"  "field,operator value"
-"sic_all_2digit":"10-99"
-"sic_all_4digit":"1011"
-"collection_sales_volume_us":"1-10"   "field,operator value[]"
-"collection_total_employees":"1-8"
-"collection_employees_here":"1-8"
-"status_id":"0-2"
-"pub_pri_id":"0,1"   "field,operator optional value"
-("http://listings.findthecompany.com/ajax_search?_len=20&page=0&app_id=1662\
- &_sortfld=sales_volume_us&_sortdir=DESC&_fil[0][field]=sic_all_divisions\
- &_fil[0][operator]==&_fil[0][value]=J&_fil[1][field]=sic_all_2digit\
- &_fil[1][operator]==&_fil[1][value]=97&_fil[2][field]=sic_all_4digit\
- &_fil[2][operator]==&_fil[2][value]=9721\
- &_fil[3][field]=collection_sales_volume_us&_fil[3][operator]==\
- &_fil[3][value][]=1&_fil[3][value][]=3&_fil[3][value][]=10\
- &_fil[4][field]=collection_total_employees&_fil[4][operator]==\
- &_fil[4][value][]=1&_fil[4][value][]=8 \
- &_fil[5][field]=collection_employees_here&_fil[5][operator]==\
- &_fil[5][value][]=1&_fil[5][value][]=8&_fil[6][field]=status_id\
- &_fil[6][operator]==&_fil[6][value][]=2&_fil[6][value][]=0\
- &_fil[7][field]=pub_pri_id&_fil[7][operator]==&_fil[7][optional]=false&_fil[7][value]=1\
- &_fil[8][field]=phys_country_code&_fil[8][operator]==&_fil[8][optional]=false\
- &_fil[8][value]=805&_tpl=srp&head[]=_i_1&head[]=company_name\
- &head[]=_GC_address&head[]=total_employees&head[]=employees_here\
- &head[]=sales_volume_us&head[]=year_started&head[]=citystate\
- &head[]=localeze_classification&head[]=id&head[]=_encoded_title\
- &head[]=name_state_tit&head[]=phys_address&head[]=phys_city&head[]=phys_state\
- &head[]=phys_country_code&head[]=phys_zip
- ")
-
-"A":{}
-
-"B"
+# "sic_all_divisons":"A-J"  "field,operator value"
+# "sic_all_2digit":"10-99"
+# "sic_all_4digit":"1011"
+# "collection_sales_volume_us":"1-10"   "field,operator value[]"
+# "collection_total_employees":"1-8"
+# "collection_employees_here":"1-8"
+# "status_id":"0-2"
+# "pub_pri_id":"0,1"   "field,operator optional value"
+# ("http://listings.findthecompany.com/ajax_search?_len=20&page=0&app_id=1662\
+#  &_sortfld=sales_volume_us&_sortdir=DESC&_fil[0][field]=sic_all_divisions\
+#  &_fil[0][operator]==&_fil[0][value]=J&_fil[1][field]=sic_all_2digit\
+#  &_fil[1][operator]==&_fil[1][value]=97&_fil[2][field]=sic_all_4digit\
+#  &_fil[2][operator]==&_fil[2][value]=9721\
+#  &_fil[3][field]=collection_sales_volume_us&_fil[3][operator]==\
+#  &_fil[3][value][]=1&_fil[3][value][]=3&_fil[3][value][]=10\
+#  &_fil[4][field]=collection_total_employees&_fil[4][operator]==\
+#  &_fil[4][value][]=1&_fil[4][value][]=8 \
+#  &_fil[5][field]=collection_employees_here&_fil[5][operator]==\
+#  &_fil[5][value][]=1&_fil[5][value][]=8&_fil[6][field]=status_id\
+#  &_fil[6][operator]==&_fil[6][value][]=2&_fil[6][value][]=0\
+#  &_fil[7][field]=pub_pri_id&_fil[7][operator]==&_fil[7][optional]=false&_fil[7][value]=1\
+#  &_fil[8][field]=phys_country_code&_fil[8][operator]==&_fil[8][optional]=false\
+#  &_fil[8][value]=805&_tpl=srp&head[]=_i_1&head[]=company_name\
+#  &head[]=_GC_address&head[]=total_employees&head[]=employees_here\
+#  &head[]=sales_volume_us&head[]=year_started&head[]=citystate\
+#  &head[]=localeze_classification&head[]=id&head[]=_encoded_title\
+#  &head[]=name_state_tit&head[]=phys_address&head[]=phys_city&head[]=phys_state\
+#  &head[]=phys_country_code&head[]=phys_zip
+#  ")
+rawdata={
+"A":{},
+"B":
 {"10":["1011","1021","1041","1044","1061","1081","1094","1099"],
 "12":["21","22","31","41"],
 "13":["11","21","81","82","89"],
 "14":["11","22","23","29","42","46","55","59","74","75","79","81","99"],
- }
-"C"
+ },
+"C":
 {
 "15":["21","22","31","41","42"],
 "16":["11","22","23","29"],
-"17":["11","21","31","41","42","43","51","52",\
+"17":["11","21","31","41","42","43","51","52",
       "61","71","81","91","93","94","95","96","99"],
-}
-"D"
+},
+"D":
 {
 "20":["11","13","15","21","22","23","24","26","32",\
       "33","34","35","37","38","41","43","44","45","46",\
@@ -53,9 +52,9 @@
 "21":["11","21","31","41"],
 "22":["11","21","31","41","51","52","53","54","57","58","59",\
       "61","62","69","73","81","82","84","95","96","97","98","99"],
-"23":["11","21"，"23","25","26","29","31","35","37","39","41",\
+"23":["11","21","23","25","26","29","31","35","37","39","41",\
       "42","53","61","69","71","81","84","85","86","87","89",\
-      "91","92","93","94","95","96","97","99"]，
+      "91","92","93","94","95","96","97","99"],
 "24":["11","21","26","29","31","34","35","36","39","41","48",\
       "49","51","52","91","93","99"],
 "25":["11","12","14","15","17","19","21","22","31","41","42",\
@@ -96,8 +95,8 @@
       "43","44","45","51","61","73"],
 "39":["11","14","15","31","42","44","49","51","52","53","55",\
       "61","65","91","93","95","96","99"]
-}
-"E"
+},
+"E":
 {
 "40":["11","13"],
 "41":["11","19","21","31","41","42","51","73"],
@@ -109,8 +108,8 @@
 "47":["24","25","29","31","41","83","85","89"],
 "48":["12","13","22","32","33","41","99"],
 "49":["11","22","23","24","25","31","32","39","41","52","53","59","61","71"]
-}
-"F"
+},
+"F":
 {
 "50":["12","13","14","15","21","23","31","32","33","39","43","44","45","46",\
       "47","48","49","51","52","63","64","65","72","74","75","78","82","83",\
@@ -118,8 +117,8 @@
 "51":["11","12","13","22","31","36","37","39","41","42","43","44","45","46",\
       "47","48","49","53","54","59","62","69","71","72","81","82","91","92",\
       "93","94","98","99"]
-}
-"G"
+},
+"G":
 {
 "52":["11","31","51","61","71"],
 "53":["11","31","99"],
@@ -128,11 +127,10 @@
 "56":["11","21","32","41","51","61","99"],
 "57":["12","13","14","22","31","34","35","36"],
 "58":["12","13"],
-"59",["12","21","32","41","42","43","44","45","46","47","48","49","61","62",\
+"59":["12","21","32","41","42","43","44","45","46","47","48","49","61","62",\
       "63","83","84","89","92","93","94","95","99"]
-}
-
-"H"
+},
+"H":
 {
 "60":["11","19","21","22","29","35","36","61","62","81","82","91","99"],
 "61":["11","41","53","59","62","63"],
@@ -141,8 +139,8 @@
 "64":["11"],
 "65":["12","13","14","15","17","19","31","41","52","53"],
 "67":["12","19","22","26","32","33","92","94","98","99"]
-}
-"I"
+},
+"I":
 {
 "70":["11","21","32","33","41"],
 "72":["11","12","13","15","16","17","18","19","21","31","41","51","61","91",\
@@ -156,16 +154,16 @@
 "79":["11","22","29","33","41","48","91","92","93","96","97","99"],
 "80":["11","21","31","41","42","43","49","51","52","59","62","63","69","71",\
       "72","82","92","93","99"],
-"81":["11"]，
-"82":["11"，"21","22","31","43","44","49","99"],
+"81":["11"],
+"82":["11","21","22","31","43","44","49","99"],
 "83":["22","31","51","61","99"],
 "84":["12","22"],
 "86":["11","21","31","41","51","61","99"],
 "87":["11","12","13","21","31","32","33","34","41","42","43","44","48"],
 "88":[],
 "89":["99"]
-}
-"J"
+},
+"J":
 {
 "91":["11","21","31","99"],
 "92":["11","21","22","23","24","29"],
@@ -176,3 +174,14 @@
 "97":["11","21"],
 "99":[]
 }
+}
+print len(rawdata)
+
+for x in sorted(rawdata.keys()):
+    print "first parameter is :",x
+    if len(rawdata[x])==0:
+        continue
+    for y in rawdata[x].keys():
+        print "second parameter is :",y
+        for z in rawdata[x][y]:
+            print "third parameter is :",y+z
