@@ -1,36 +1,55 @@
-# "sic_all_divisons":"A-J"  "field,operator value"
-# "sic_all_2digit":"10-99"
-# "sic_all_4digit":"1011"
-# "collection_sales_volume_us":"1-10"   "field,operator value[]"
-# "collection_total_employees":"1-8"
-# "collection_employees_here":"1-8"
-# "status_id":"0-2"
-# "pub_pri_id":"0,1"   "field,operator optional value"
-# ("http://listings.findthecompany.com/ajax_search?_len=20&page=0&app_id=1662\
-#  &_sortfld=sales_volume_us&_sortdir=DESC&_fil[0][field]=sic_all_divisions\
-#  &_fil[0][operator]==&_fil[0][value]=J&_fil[1][field]=sic_all_2digit\
-#  &_fil[1][operator]==&_fil[1][value]=97&_fil[2][field]=sic_all_4digit\
-#  &_fil[2][operator]==&_fil[2][value]=9721\
-#  &_fil[3][field]=collection_sales_volume_us&_fil[3][operator]==\
-#  &_fil[3][value][]=1&_fil[3][value][]=3&_fil[3][value][]=10\
-#  &_fil[4][field]=collection_total_employees&_fil[4][operator]==\
-#  &_fil[4][value][]=1&_fil[4][value][]=8 \
-#  &_fil[5][field]=collection_employees_here&_fil[5][operator]==\
-#  &_fil[5][value][]=1&_fil[5][value][]=8&_fil[6][field]=status_id\
-#  &_fil[6][operator]==&_fil[6][value][]=2&_fil[6][value][]=0\
-#  &_fil[7][field]=pub_pri_id&_fil[7][operator]==&_fil[7][optional]=false&_fil[7][value]=1\
-#  &_fil[8][field]=phys_country_code&_fil[8][operator]==&_fil[8][optional]=false\
-#  &_fil[8][value]=805&_tpl=srp&head[]=_i_1&head[]=company_name\
-#  &head[]=_GC_address&head[]=total_employees&head[]=employees_here\
-#  &head[]=sales_volume_us&head[]=year_started&head[]=citystate\
-#  &head[]=localeze_classification&head[]=id&head[]=_encoded_title\
-#  &head[]=name_state_tit&head[]=phys_address&head[]=phys_city&head[]=phys_state\
-#  &head[]=phys_country_code&head[]=phys_zip
-#  ")
+import json
+
+
+'''
+This module mainly  generate the filter conditions of the target URL.
+mainly conditions is _fil parameters :
+"sic_all_divisions":"A-J"  "field,operator value"
+"sic_all_2digit":"10-99"
+"sic_all_4digit":"1011"
+"collection_sales_volume_us":"1-10"   "field,operator value[]"
+"collection_total_employees":"1-8"
+"collection_employees_here":"1-8"
+"status_id":"0-2"
+"pub_pri_id":"0,1"   "field,operator optional value"
+the entire URL as the follow:
+("http://listings.findthecompany.com/ajax_search?_len=20&page=0&app_id=1662\
+&_sortfld=sales_volume_us&_sortdir=DESC&_fil[0][field]=sic_all_divisions
+&_fil[0][operator]==&_fil[0][value]=J&_fil[1][field]=sic_all_2digit\
+&_fil[1][operator]==&_fil[1][value]=97&_fil[2][field]=sic_all_4digit\
+&_fil[2][operator]==&_fil[2][value]=9721\
+&_fil[3][field]=collection_sales_volume_us&_fil[3][operator]==\
+&_fil[3][value][]=1&_fil[3][value][]=3&_fil[3][value][]=10\
+&_fil[4][field]=collection_total_employees&_fil[4][operator]==\
+&_fil[4][value][]=1&_fil[4][value][]=8 \
+&_fil[5][field]=collection_employees_here&_fil[5][operator]==\
+&_fil[5][value][]=1&_fil[5][value][]=8&_fil[6][field]=status_id\
+&_fil[6][operator]==&_fil[6][value][]=2&_fil[6][value][]=0\
+&_fil[7][field]=pub_pri_id&_fil[7][operator]==&_fil[7][optional]=false&_fil[7][value]=1\
+&_fil[8][field]=phys_country_code&_fil[8][operator]==&_fil[8][optional]=false\
+&_fil[8][value]=805&_tpl=srp&head[]=_i_1&head[]=company_name\
+&head[]=_GC_address&head[]=total_employees&head[]=employees_here\
+&head[]=sales_volume_us&head[]=year_started&head[]=citystate\
+&head[]=localeze_classification&head[]=id&head[]=_encoded_title\
+&head[]=name_state_tit&head[]=phys_address&head[]=phys_city&head[]=phys_state\
+&head[]=phys_country_code&head[]=phys_zip
+")
+'''
+
+
+prefix_url="http://listings.findthecompany.com/ajax_search?_len=100&page=0&app_id=1662\
+&_sortfld=sales_volume_us&_sortdir=DESC&"
+
+suffix_url="&_tpl=srp&head[]=_i_1&head[]=company_name\
+&head[]=_GC_address&head[]=total_employees&head[]=employees_here\
+&head[]=sales_volume_us&head[]=year_started&head[]=citystate\
+&head[]=localeze_classification&head[]=id&head[]=_encoded_title\
+&head[]=name_state_tit&head[]=phys_address&head[]=phys_city&head[]=phys_state\
+&head[]=phys_country_code&head[]=phys_zip"
 rawdata={
 "A":{},
 "B":
-{"10":["1011","1021","1041","1044","1061","1081","1094","1099"],
+{"10":["11","21","41","44","61","81","94","99"],
 "12":["21","22","31","41"],
 "13":["11","21","81","82","89"],
 "14":["11","22","23","29","42","46","55","59","74","75","79","81","99"],
@@ -175,13 +194,108 @@ rawdata={
 "99":[]
 }
 }
+collection_sales_volume_us=["1","2","3","4","5","6","7","8","9","10"]
+collection_total_employees=["1","2","3","4","5","6","7","8"]
+collection_employees_here=["1","2","3","4","5","6","7","8"]
+status_id=["0","1","2"]
+pub_pri_id=["0","1"]
 print len(rawdata)
 
-for x in sorted(rawdata.keys()):
-    print "first parameter is :",x
-    if len(rawdata[x])==0:
-        continue
-    for y in rawdata[x].keys():
-        print "second parameter is :",y
-        for z in rawdata[x][y]:
-            print "third parameter is :",y+z
+# for x in sorted(rawdata.keys()):
+#     print "first parameter is :",x
+#     if len(rawdata[x])==0:
+#         continue
+#     for y in rawdata[x].keys():
+#         print "second parameter is :",y
+#         for z in rawdata[x][y]:
+#             print "third parameter is :",y+z
+
+
+def combineSuffixCondition(count,prefix_condition):
+    for volume in collection_sales_volume_us:
+        count2=count+1
+        tmp="_fil["+str(count2)+"]"
+        condition_url=tmp+"[field]=collection_sales_volume_us&"+tmp+\
+        "[operator]==&"+tmp+"[value]="+volume+"&"
+        for total_employees in collection_total_employees:
+            count3=count2+1
+            tmp="_fil["+str(count3)+"]"
+            condition_url2=tmp+"[field]=collection_total_employees&"+tmp+\
+            "[operator]==&"+tmp+"[value]="+total_employees+"&"
+            count4=count3+1
+            tmp="_fil["+str(count4)+"]"
+            condition_url3=tmp+"[field]=phys_country_code&"+tmp+"[operator]==&"\
+            +tmp+"[optional]=false&"+tmp+"[value]=805"
+            suffix_condition=condition_url+condition_url2+condition_url3
+
+            entire_condition=prefix_condition+suffix_condition+suffix_url
+            yield entire_condition.encode("utf-8")
+            # for employees_here in collection_employees_here:
+            #     count4=count3+1
+            #     tmp="_fil["+str(count4)+"]"
+            #     condition_url3=tmp+"[field]=collection_employees_here&"+tmp+\
+            #     "[operator]==&"+tmp+"[value]="+employees_here+"&"
+            #     for st_id in status_id:
+            #         count5=count4+1
+            #         tmp="_fil["+str(count5)+"]"
+            #         condition_url4=tmp+"[field]=status_id&"+tmp+\
+            #         "[operator]==&"+tmp+"[value]="+st_id+"&"
+            #         for pp_id in pub_pri_id:
+            #             count6=count5+1
+            #             tmp="_fil["+str(count6)+"]"
+            #             condition_url5=tmp+"[field]=pub_pri_id&"+tmp+\
+            #             "[operator]==&"+tmp+"[optional]=false&"+tmp+"[value]="+pp_id+"&"
+
+                        # combine phys_country_code
+                        # count7=count6+1   #use
+                        # tmp="_fil["+str(count7)+"]"
+                        # condition_url6=tmp+"[field]=phys_country_code&"+tmp+"[operator]==&"\
+                        # +tmp+"[optional]=false&"+tmp+"[value]=805"
+                        # suffix_condition=condition_url+condition_url2+condition_url3\
+                        # +condition_url4+condition_url5+condition_url6
+                        #
+                        # entire_condition=prefix_condition+suffix_condition+suffix_url
+                        # yield entire_condition.encode("utf-8")
+
+def combineCondition():
+    for sic_all_divisions in sorted(rawdata.keys()):
+        condition_url=""
+        count=0
+        tmp="_fil["+str(count)+"]"
+        condition_url+=tmp+"[field]=sic_all_divisions&"+tmp+"[operator]==&"+tmp\
+        +"[value]="+sic_all_divisions+"&"
+        if len(rawdata[sic_all_divisions])!=0:
+            for sic_all_2digit in sorted(rawdata[sic_all_divisions].keys()):
+                count=1
+                tmp="_fil["+str(count)+"]"
+                condition_url2=tmp+"[field]=sic_all_2digit&"+tmp+"[operator]==&"\
+                +tmp+"[value]="+sic_all_2digit+"&"
+                if len(rawdata[sic_all_divisions][sic_all_2digit])!=0:
+                    for sic_all_4digit in rawdata[sic_all_divisions][sic_all_2digit]:
+                        count=2
+                        tmp="_fil["+str(count)+"]"
+                        condition_url3=tmp+"[field]=sic_all_4digit&"+tmp+\
+                        "[operator]==&"+tmp+"[value]="+sic_all_2digit+sic_all_4digit+"&"
+
+                        prefix_condition=condition_url+condition_url2+condition_url3
+                        yield combineSuffixCondition(count,prefix_condition)
+                else:
+                    prefix_condition=condition_url+condition_url2
+                    yield combineSuffixCondition(count,prefix_condition)
+
+        else:
+            prefix_condition=condition_url
+            yield combineSuffixCondition(count,prefix_condition)
+def storeConditionParameter():
+    file=open("condition_parameter.txt","w")
+    condition_list=list(combineCondition())
+    print "the condition list is :",len(condition_list)
+    print condition_list[0]
+    index=0
+    for x in condition_list:
+        for y in list(x):
+            file.write(y+"\n")
+
+
+if __name__=="__main__":
+    storeConditionParameter()
