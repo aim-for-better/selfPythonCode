@@ -1,5 +1,3 @@
-import json
-
 
 '''
 This module mainly  generate the filter conditions of the target URL.
