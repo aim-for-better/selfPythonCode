@@ -1,6 +1,9 @@
-#coding=utf-8
-from selenium import webdriver
-driver=webdriver.Chrome()
-driver.get("http://www.baidu.com")
+#-*- coding:utf-8 -*-
+def getLastLineFile(file):
+    count=0
+    for line in file:
+        count+=1
+    return count
 
-print driver.title
+file=open("../company_url_file.txt","r")
+print getLastLineFile(file)

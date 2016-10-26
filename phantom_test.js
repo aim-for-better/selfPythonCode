@@ -5,7 +5,10 @@ var url2="http://www.baidu.com";
 page.open(url1,function(status){
   if(status==="success"){
     page.render("y.png");
+
     console.log(document);
+    console.log(str(document))
+    console.log(document.title)
   }else{
     console.log("error");
   }
