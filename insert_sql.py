@@ -14,10 +14,11 @@ try:
         cur=conn.cursor()
     print "connection database success"
 
-    cur.execute("select * from application limit5;")
+    cur.execute("select * from application limit 5;")
     result=cur.fetchone()
     while result:
         print result
+        print type(result)
         result=cur.fetchone()
 except e:
     print "Connection mysql database error! The error is %s",e
