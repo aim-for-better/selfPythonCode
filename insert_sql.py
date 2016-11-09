@@ -30,10 +30,10 @@ class InsertPatentsData():
         return conn
 
     def  insert_file_into_db(self,file_name=""):
-        assert file_name=="","file_name should be a file name including path,and can not be None"
+        assert file_name!="","file_name should be a file name including path,and can not be None"
         table_name=file_name.split("/")[-1].split(".")[0]
 
-        file=file.open(file_name,"r")
+        file=open(file_name,"r")
 
         conn=self.connect()
         cur=conn.cursor()
@@ -42,12 +42,19 @@ class InsertPatentsData():
         line_data=[]
         title=file.next()
         tp=tuple(title.split("\t"))
-        table_param="("+("%s,"**len(tp))[0:-1]+")"  # generate a string like (%s,%s,%s) the number of %s is unknown
+        table_param="("+("%s,"*len(tp))[0:-1]+")"  # generate a string like (%s,%s,%s) the number of %s is unknown
 
-        sql_str="insert into "+table_name+"values "+table_param
+        sql_str="insert into "+table_name+" values "+table_param
 
+        print sql_str
+        flag=True
         for line in file:
-            item=tuple(str(line).split("\t"))
+            item=tuple(str(line).rstrip("\n").split("\t"))
+
+            if flag:
+                print item
+                flag=False
+            #
             i+=1
             line_data.append(item)
             if(i==batch_num):
@@ -75,5 +82,5 @@ class InsertPatentsData():
 if __name__=="__main__":
     insert_tool=InsertPatentsData()
 
-    file_name=""  # give a file name
-    insert_tool.insert_file_into_db()
+    file_name="D:/patentsviewdata/tsvfile/cpc_current.tsv"  # give a file name
+    insert_tool.insert_file_into_db(file_name=file_name)
