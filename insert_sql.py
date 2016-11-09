@@ -50,37 +50,44 @@ class InsertPatentsData():
         flag=True
         for line in file:
             item=tuple(str(line).rstrip("\n").split("\t"))
+            try:
+                conn.begin()
+                cur.execute(sql_str,item)
+                conn.commit()
+            except Exception,e:
+                print e
+                continue
 
-            if flag:
-                print item
-                flag=False
-            #
-            i+=1
-            line_data.append(item)
-            if(i==batch_num):
-                try:
-                    conn.begin()
-                    cur.executemany(sql_str,line_data)
-                    conn.commit()
-
-                except Exception,e:
-                    conn.rollback()
-                    print e
-                line_data = []
-                i = 0
-        try:
-            conn.begin()
-            cur.executemany(sql_str, line_data)
-            conn.commit()
-
-        except e:
-            conn.rollback()
-            print e
+        #     if flag:
+        #         print item
+        #         flag=False
+        #     #
+        #     i+=1
+        #     line_data.append(item)
+        #     if(i==batch_num):
+        #         try:
+        #             conn.begin()
+        #             cur.executemany(sql_str,line_data)
+        #             conn.commit()
+        #
+        #         except Exception,e:
+        #             conn.rollback()
+        #             print e
+        #         line_data = []
+        #         i = 0
+        # try:
+        #     conn.begin()
+        #     cur.executemany(sql_str, line_data)
+        #     conn.commit()
+        #
+        # except e:
+        #     conn.rollback()
+        #     print e
 
         cur.close()
         conn.close()
 if __name__=="__main__":
     insert_tool=InsertPatentsData()
 
-    file_name="D:/patentsviewdata/tsvfile/cpc_current.tsv"  # give a file name
+    file_name="D:/patentsviewdata/tsvfile/assignee.tsv"  # give a file name
     insert_tool.insert_file_into_db(file_name=file_name)

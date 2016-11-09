@@ -181,13 +181,13 @@ def  get_usapplicationcitation(db_connection,patent_id):
     while usapplicationcitation:
         tmp_usapplicationcitation={}
         tmp_usapplicationcitation["application_id"] = usapplicationcitation[2]
-        tmp_usapplicationcitation['date'] = usapplicationcitation[3]
-        tmp_usapplicationcitation['name'] =usapplicationcitation[4]
-        tmp_usapplicationcitation['kind'] =usapplicationcitation[5]
-        tmp_usapplicationcitation['number'] = usapplicationcitation[6]
-        tmp_usapplicationcitation['country'] = usapplicationcitation[7]
-        tmp_usapplicationcitation['category'] =usapplicationcitation[8]
-        tmp_usapplicationcitation['sequence'] = usapplicationcitation[9]
+        tmp_usapplicationcitation["date"] = usapplicationcitation[3]
+        tmp_usapplicationcitation["name"] =usapplicationcitation[4]
+        tmp_usapplicationcitation["kind"] =usapplicationcitation[5]
+        tmp_usapplicationcitation["number"] = usapplicationcitation[6]
+        tmp_usapplicationcitation["country"] = usapplicationcitation[7]
+        tmp_usapplicationcitation["category"] =usapplicationcitation[8]
+        tmp_usapplicationcitation["sequence"] = usapplicationcitation[9]
 
         usapplicationcitation_array.append(tmp_usapplicationcitation)
 
@@ -212,13 +212,13 @@ def get_uspatentcitation(db_connection,patent_id):
 
     while uspatentcitation:
         tmp_uspatentcitation={}
-        tmp_uspatentcitation['citation_id'] = uspatentcitation[2]
-        tmp_uspatentcitation['date'] = uspatentcitation[3]
-        tmp_uspatentcitation['name'] = uspatentcitation[4]
-        tmp_uspatentcitation['kind'] = uspatentcitation[5]
-        tmp_uspatentcitation['country'] = uspatentcitation[6]
-        tmp_uspatentcitation['category'] = uspatentcitation[7]
-        tmp_uspatentcitation['sequence'] = uspatentcitation[8]
+        tmp_uspatentcitation["citation_id"] = uspatentcitation[2]
+        tmp_uspatentcitation["date"] = uspatentcitation[3]
+        tmp_uspatentcitation["name"] = uspatentcitation[4]
+        tmp_uspatentcitation["kind"] = uspatentcitation[5]
+        tmp_uspatentcitation["country"] = uspatentcitation[6]
+        tmp_uspatentcitation["category"] = uspatentcitation[7]
+        tmp_uspatentcitation["sequence"] = uspatentcitation[8]
 
         uspatentcitation_array.append(tmp_uspatentcitation)
 
@@ -242,8 +242,8 @@ def get_otherreference(db_connection,patent_id):
 
     while otherreference:
         tmp_otherreference={}
-        tmp_otherreference['text'] = otherreference[2]
-        tmp_otherreference['sequence'] = otherreference[3]
+        tmp_otherreference["text"] = otherreference[2]
+        tmp_otherreference["sequence"] = otherreference[3]
 
         otherreference_array.append(tmp_otherreference)
         otherreference=otherreference_cur.fetchone()
@@ -262,15 +262,15 @@ def get_usreldoc(db_connection,patent_id):
     usreldoc=usreldoc_cur.fetchone()
     while usreldoc:
         tmp_usreldoc={}
-        tmp_usreldoc['rel_id'] = usreldoc[2]
-        tmp_usreldoc['doctype'] = usreldoc[3]
-        tmp_usreldoc['status'] = usreldoc[4]
-        tmp_usreldoc['date'] = usreldoc[5]
-        tmp_usreldoc['number'] = usreldoc[6]
-        tmp_usreldoc['kind'] = usreldoc[7]
-        tmp_usreldoc['country'] = usreldoc[8]
-        tmp_usreldoc['relationship'] = usreldoc[9]
-        tmp_usreldoc['sequence'] = usreldoc[10]
+        tmp_usreldoc["rel_id"] = usreldoc[2]
+        tmp_usreldoc["doctype"] = usreldoc[3]
+        tmp_usreldoc["status"] = usreldoc[4]
+        tmp_usreldoc["date"] = usreldoc[5]
+        tmp_usreldoc["number"] = usreldoc[6]
+        tmp_usreldoc["kind"] = usreldoc[7]
+        tmp_usreldoc["country"] = usreldoc[8]
+        tmp_usreldoc["relationship"] = usreldoc[9]
+        tmp_usreldoc["sequence"] = usreldoc[10]
 
         usreldoc_array.append(tmp_usreldoc)
 
@@ -289,19 +289,19 @@ def get_ipcr(db_connection,patent_id):
     ipcr = ipcr_cur.fetchone()
     while ipcr:
         tmp_ipcr = {}
-        tmp_ipcr['classification_level'] = ipcr[2]
-        tmp_ipcr['section'] = ipcr[3]
-        tmp_ipcr['ipc_class'] = ipcr[4]
-        tmp_ipcr['subclass'] = ipcr[5]
-        tmp_ipcr['main_group'] = ipcr[6]
-        tmp_ipcr['subgroup'] = ipcr[7]
-        tmp_ipcr['symbol_position'] = ipcr[8]
-        tmp_ipcr['classification_value'] = ipcr[9]
-        tmp_ipcr['classification_status'] = ipcr[10]
-        tmp_ipcr['classification_data_source'] = ipcr[11]
-        tmp_ipcr['action_date'] = ipcr[12]
-        tmp_ipcr['ipc_version_indicator'] = ipcr[13]
-        tmp_ipcr['sequence'] = ipcr[14]
+        tmp_ipcr["classification_level"] = ipcr[2]
+        tmp_ipcr["section"] = ipcr[3]
+        tmp_ipcr["ipc_class"] = ipcr[4]
+        tmp_ipcr["subclass"] = ipcr[5]
+        tmp_ipcr["main_group"] = ipcr[6]
+        tmp_ipcr["subgroup"] = ipcr[7]
+        tmp_ipcr["symbol_position"] = ipcr[8]
+        tmp_ipcr["classification_value"] = ipcr[9]
+        tmp_ipcr["classification_status"] = ipcr[10]
+        tmp_ipcr["classification_data_source"] = ipcr[11]
+        tmp_ipcr["action_date"] = ipcr[12]
+        tmp_ipcr["ipc_version_indicator"] = ipcr[13]
+        tmp_ipcr["sequence"] = ipcr[14]
         ipcr_array.append(tmp_ipcr)
         ipcr = ipcr_cur.fetchone()
     ipcr_cur.close()
@@ -410,9 +410,9 @@ def get_cpc(db_connection,patent_id):
     cpc=cpc_cur.fetchone()
     while cpc:
         tmp_cpc={}
-        tmp_cpc['section_id'] = cpc[2]
-        tmp_cpc['category'] = cpc[6]
-        tmp_cpc['sequence'] = cpc[7]
+        tmp_cpc["section_id"] = cpc[2]
+        tmp_cpc["category"] = cpc[6]
+        tmp_cpc["sequence"] = cpc[7]
         # get subsection
         query_subsection="SELECT * FROM cpc_subsection WHERE id=%s"
         subsection_cur=db_connection.cursor()
@@ -452,63 +452,71 @@ def get_cpc(db_connection,patent_id):
 
     return cpc_array
 
-if __name__ == '__main__':
-    conn = pymysql.Connect(host='127.0.0.1', port=3306, user='root', passwd='', db='patent2', charset='utf8')
-    conn1 = pymysql.Connect(host='127.0.0.1', port=3306, user='root', passwd='', db='patent2', charset='utf8')
+if __name__ == "__main__":
+    param_dict={
+    "host":"localhost",
+    "port":3306,
+    "user":"root"
+    "passwd":"",
+    "db":"patentsviewdata"
+    }
+    db_connection=pymysql.Connect(param_dict)
 
     try:
-        f = open('patent.json', 'w')
-        curs = conn1.cursor()
-        sql = 'select * from patent limit 4800000,300000'
-        # sql = 'select * from patent limit 5'
-        # sql = 'select * from patent WHERE id="7876855"' #测试usapplicationcitation
-        # sql = 'select * from patent WHERE id="3930281"' #测试inventor？
-        curs.execute(sql)
-        result = curs.fetchone()
+        file = open("patent.json", "w")
+        patent_cur=db_connection.cursor()
+        query_patent="SELECT * FROM patent"
+        patent_cur.execute(query_patent)
+        patent=patent_cur.fetchone()
+
+
+
         des = curs.description
         count =0
-        while result:
+        while patent:
             d = {}
             count=count+1
             print count
             for i in range(0, len(des)):
                 d[des[i][0]] = result[i]
-            inventor = getInventor(d['id'])
-            d['inventor'] = inventor
-            assignee = getAssignee(d['id'])
-            d['assignee'] = assignee
-            lawyer = getLawer(d['id'])
-            d['lawyer'] = lawyer
-            application = getApplication(d['id'])
-            d['application'] = application
-            foreigncitation = getForeigncitation(d['id'])
-            d['foreigncitation'] = foreigncitation
-            usapplicationcitation = getUsapplicationcitation(d['id'])
-            d['usapplicationcitation'] = usapplicationcitation
-            uspatentcitation = getUspatentcitation(d['id'])
-            d['uspatentcitation'] = uspatentcitation
-            otherreference = getOtherreference(d['id'])
-            d['otherreference'] = otherreference
-            usreldoc = getUsreldoc(d['id'])
-            d['usreldoc'] = usreldoc
-            ipcr = getIpcr(d['id'])
-            d['ipcr'] = ipcr
-            uspc = getUspc(d['id'])
-            d['uspc'] = uspc
-            nber = getNber(d['id'])
-            d['nber'] = nber
-            cpc = getCpc(d['id'])
-            d['cpc'] = cpc
+
+            inventor=get_inventor(d["id"])
+            d["inventor"]=inventor
+            assignee=get_assignee(d["id"])
+            d["assigne"]=assignee
+            lawyer = get_lawer(d["id"])
+            d["lawyer"] = lawyer
+            application = get_application(d["id"])
+            d["application"] = application
+            foreigncitation = get_foreigncitation(d["id"])
+            d["foreigncitation"] = foreigncitation
+            usapplicationcitation = get_usapplicationcitation(d["id"])
+            d["usapplicationcitation"] = usapplicationcitation
+            uspatentcitation = get_uspatentcitation(d["id"])
+            d["uspatentcitation"] = uspatentcitation
+            otherreference = get_otherreference(d["id"])
+            d["otherreference"] = otherreference
+            usreldoc = get_usreldoc(d["id"])
+            d["usreldoc"] = usreldoc
+            ipcr = get_ipcr(d["id"])
+            d["ipcr"] = ipcr
+            uspc = get_uspc(d["id"])
+            d["uspc"] = uspc                                                                  
+            nber = get_nber(d["id"])
+            d["nber"] = nber
+            cpc = get_cpc(d["id"])
+            d["cpc"] = cpc
+
             # j = json.dumps(d, cls=MyEncoder)
             j = json.dumps(d, default=json_serial)
-            index = {'index':{}}
+            index = {"index":{}}
             index = json.dumps(index)
-            f.write(index+'\n')
-            f.write(j+'\n')
-            # print d['assignee']
-            result = curs.fetchone()
+            f.write(index+"\n")
+            f.write(j+"\n")
+            # print d["assignee"]
+            patent = curs.fetchone()
         curs.close()
-        f.close()
+        file.close()
     # except Exception, e:
     #     print e
     finally:
