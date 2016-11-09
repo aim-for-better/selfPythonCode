@@ -24,7 +24,7 @@ class InsertPatentsData():
             #     print result
             #     print type(result)
             #     result=cur.fetchone()
-        except e:
+        except Exception,e:
             print ("Connection mysql database error! The error is %s",e)
 
         return conn
@@ -56,7 +56,7 @@ class InsertPatentsData():
                     cur.executemany(sql_str,line_data)
                     conn.commit()
 
-                except e:
+                except Exception,e:
                     conn.rollback()
                     print e
                 line_data = []

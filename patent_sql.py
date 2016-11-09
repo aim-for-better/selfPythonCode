@@ -3,12 +3,8 @@ import json
 import pymysql
 
 
+def get_inventor(db_connection,patent_id):
 
-
-
-
-
-def getInventor(db_connection,patent_id):
     """
     if you want get the inventor ,you first need get the patent_id from table patent
     then, go to table patent_inventor find the inventor_id by patent_id,
@@ -16,395 +12,445 @@ def getInventor(db_connection,patent_id):
     """
 
     # query patent_inventor
+    inventor_array=[]
     query_inventor_id="SELECT inventor_id FROM patent_inventor \
     WHERE patent_inventor.patent_id=%s"
-    patent_inventor_cur=db_connection.cursor
+    patent_inventor_cur=db_connection.cursor()
     patent_inventor_cur.execute(query_inventor_id,patent_id)
     # cur.execute(query_inventor_id,patent_id)
-    patent_inventor=cur.fetchone()
-    if patent_inventor:
+    patent_inventor=patent_inventor_cur.fetchone()
+    while patent_inventor:
         inventor_id=patent_inventor[0]
 
         # query inventor
         query_inventor="SELECT * FROM inventor WHERE inventor.id=%s"
+        inventor_cur=db_connection.cursor()
         inventor_cur.execute(query_inventor,inventor_id)
         inventor=inventor_cur.fetchone()
+        location_inventor_cur.close()
         if inventor:
-            location_id=inventor[0]
+            tmp_inventor={} # as a temp value store a inventor
+            tmp_inventor["name_first"]=inventor[1]
+            tmp_inventor["name_last"]=inventor[2]
+            query_location_inventor="SELECT location_id FROM location_inventor WHERE inventor_id=%s"
+            location_inventor_cur=db_connection.cursor()
+            location_inventor_cur.execute(query_location_inventor,inventor[0])
+            location_inventor=location_inventor_cur.fetchone()
+            location_inventor_cur.close()
+            tmp_location={}
+            if  location_inventor:
+                query_location="SELECT * FROM location WHERE id=%s limit 1;"
+                location_cur=db_connection.cursor()
+                location_cur.execute(query_location,location_inventor[0])
+                location=location_cur.fetchone()
+                if location:
+                    loc={}
+                    loc["lat"]=location[4]
+                    loc["lon"]=location[5]
+                    tmp_location["city"]=location[1]
+                    tmp_location["state"]=location[2]
+                    tmp_location["country"]=location[3]
+                    tmp_location["loc"]=loc
+                location_cur.close()
+            tmp_inventor["location"]=tmp_location
+            inventor_array.append(tmp_inventor)
+        patent_inventor=patent_inventor_cur.fetchone()
+    patent_inventor_cur.close()
+    return inventor_array
 
 
-def getInventor(patentId):
-    inventor = []  # 保存inventor
-    sql1 = 'SELECT inventor_id FROM patent_inventor WHERE patent_inventor.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        sql2 = 'SELECT * FROM inventor WHERE inventor.id="' + result1[0] + '"'
-        curs2 = conn.cursor()
-        curs2.execute(sql2)
-        result2 = curs2.fetchone()
-        if result2:
-            i = {}  # 保存inventor属性的字典
-            i['name_first'] = result2[1]
-            i['name_last'] = result2[2]
-            sql3 = 'SELECT location_id FROM location_inventor WHERE inventor_id="' + result2[0] + '"'
-            curs3 = conn.cursor()
-            curs3.execute(sql3)
-            result3 = curs3.fetchone()
-            curs3.close()
-            location = {}
-            if result3:
-                sql4 = 'SELECT * FROM r_location2 WHERE location_id="' + result3[0] + '" limit 1'
-                curs4 = conn.cursor()
-                curs4.execute(sql4)
-                result4 = curs4.fetchone()
-                if result4:
+def get_assignee(db_connection,patent_id):
+
+    """
+    if you want get the assignee ,you first need get the patent_id from table patent
+    then, go to table patent_assignee find the assignee_id by patent_id,
+    finally go to table assignee find the assignee by assignee_id
+    :param db_connection:
+    :param patent_id:
+    :return:
+    """
+    assignee_array=[] #store assignee
+    query_patent_assignee="SELECT assignee_id FROM patent_assignee WHERE \
+patent_assignee.patent_id=%s"
+    patent_assignee_cur=db_connection.cursor()
+    patent_assignee_cur.execute(query_patent_assignee,patent_id)
+    patent_assignee=patent_assignee_cur.fetchone()
+    while patent_assignee:
+        query_assignee="SELECT * FROM assignee WHERE assignee.id=%s"
+        assignee_cur=db_connection.cursor()
+        assignee_cur.execute(query_assignee,patent_assignee[0])
+        assignee=assignee_cur.fetchone()
+
+        assignee_cur.close()
+
+        if assignee:
+            tmp_assignee = {}
+            tmp_assignee["type"]=assignee[1]
+            tmp_assignee["name_first"]=assignee[2]
+            tmp_assignee["name_last"]=assignee[3]
+            tmp_assignee["organization"]=assignee[4]
+            query_location_assignee = "SELECT location_id FROM location_assignee WHERE assignee_id=%s"
+            location_assignee_cur = db_connection.cursor()
+            location_assignee_cur.execute(query_location_assignee, assignee[0])
+            location_assignee = location_assignee_cur.fetchone()
+            location_assignee_cur.close()
+            tmp_location = {}
+            if location_assignee:
+                query_location = "SELECT * FROM location WHERE id=%s limit 1;"
+                location_cur = db_connection.cursor()
+                location_cur.execute(query_location, location_assignee[0])
+                location = location_cur.fetchone()
+                if location:
                     loc = {}
-                    loc['lat'] = result4[5]
-                    loc['lon'] = result4[6]
-                    location['city'] = result4[2]
-                    location['state'] = result4[3]
-                    location['country'] = result4[4]
-                    location['loc'] = loc
-                curs4.close()
-            i['location'] = location
-            inventor.append(i)
-        curs2.close()
-        result1 = curs1.fetchone()
-    curs1.close()
-    return inventor
+                    loc["lat"] = location[4]
+                    loc["lon"] = location[5]
+                    tmp_location["city"] = location[1]
+                    tmp_location["state"] = location[2]
+                    tmp_location["country"] = location[3]
+                    tmp_location["loc"] = loc
+                location_cur.close()
+            tmp_assignee["location"] = tmp_location
+            assignee_array.append(tmp_assignee)
+        patent_assignee=patent_assignee_cur.fetchone()
+    patent_assignee_cur.close()
+    return assignee_array
 
 
-def getAssignee(patentId):
-    assignee = []
-    sql1 = 'SELECT assignee_id FROM patent_assignee WHERE patent_assignee.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        a = {}
-        sql2 = 'SELECT * FROM assignee WHERE assignee.id="' + result1[0] + '"'
-        curs2 = conn.cursor()
-        curs2.execute(sql2)
-        result2 = curs2.fetchone()
-        curs2.close()
-        if result2:
-            a['type'] = result2[1]
-            a['name_first'] = result2[2]
-            a['name_last'] = result2[3]
-            a['organization'] = result2[4]
-            sql3 = 'SELECT location_id FROM location_assignee WHERE assignee_id="' + result2[0] + '"'
-            curs3 = conn.cursor()
-            curs3.execute(sql3)
-            result3 = curs3.fetchone()
-            curs3.close()
-            location = {}
-            if result3:
-                sql4 = 'SELECT * FROM r_location2 WHERE location_id="' + result3[0] + '" limit 1'
-                curs4 = conn.cursor()
-                curs4.execute(sql4)
-                result4 = curs4.fetchone()
-                if result4:
-                    loc = {}
-                    loc['lat'] = result4[5]
-                    loc['lon'] = result4[6]
-                    location['city'] = result4[2]
-                    location['state'] = result4[3]
-                    location['country'] = result4[4]
-                    location['loc'] = loc
-                curs4.close()
-            a['location'] = location
-        assignee.append(a)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return assignee
+def get_lawyer(db_connection,patent_id):
+    """
+     if you want get the lawyer ,you first need get the patent_id from table patent
+    then, go to table patent_lawyer find the lawyer_id by patent_id,
+    finally go to table lawyer find the lawyer by lawyer_id
+    :param db_connection:
+    :param patent_id:
+    :return:
+    """
+    lawyer_array=[]
+    query_patent_lawyer="SELECT lawyer_id FROM patent_lawyer WHERE\
+     patent_lawyer.patent_id=%s"
+    patent_lawyer_cur=db_connection.cursor()
+    patent_lawyer_cur.execute(query_patent_lawyer,patent_id)
+    patent_lawyer=patent_lawyer_cur.fetchone()
+    while  patent_lawyer:
+        query_lawyer="SELECT * FROM lawyer WHERE lawyer.id=%s"
+        lawyer_cur=db_connection.cursor()
+        lawyer_cur.execute(query_lawyer,patent_lawyer[0])
+        lawyer=lawyer_cur.fetchone()
+
+        lawyer_cur.close()
+        if lawyer:
+            tmp_lawyer={}
+            tmp_lawyer["name_first"]=lawyer[1]
+            tmp_lawyer["name_last"]=lawyer[2]
+            tmp_lawyer["organization"]=lawyer[3]
+            tmp_lawyer["country"]=lawyer[4]
+            lawyer_array.append(tmp_lawyer)
+        patent_lawyer=patent_lawyer_cur.fetchone()
+
+    patent_lawyer_cur.close()
+    return lawyer_array
 
 
-def getLawer(patentId):
-    lawyer = []
-    sql1 = 'SELECT lawyer_id FROM patent_lawyer WHERE patent_lawyer.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        l = {}
-        sql2 = 'SELECT * FROM lawyer WHERE lawyer.id="' + result1[0] + '"'
-        curs2 = conn.cursor()
-        curs2.execute(sql2)
-        result2 = curs2.fetchone()
-        curs2.close()
-        if result2:
-            l['name_first'] = result2[1]
-            l['name_last'] = result2[2]
-            l['organization'] = result2[3]
-            l['country'] = result2[4]
-        lawyer.append(l)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return lawyer
+def get_application(db_connection,patent_id):
+
+    application={}
+    query_application="SELECT * FROM application WHERE application.patent_id=%s"
+    application_cur=db_connection.cursor()
+    application_cur.execute(query_application,patent_id)
+    tmp_application=application_cur.fetchone()
+
+    if tmp_application:
+        application["series_code"]=tmp_application[2]
+        application["number"]=tmp_application[3]
+        application["country"]=tmp_application[4]
+        application["date"]=tmp_application[5]
+    application_cur.close()
+    return  application
 
 
-def getApplication(patentId):
-    application = {}
-    sql1 = 'SELECT * FROM application WHERE application.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    if result1:
-        a = {}
-        a['series_code'] = result1[2]
-        a['number'] = result1[3]
-        a['country'] = result1[4]
-        a['date'] = result1[5]
-        application = a
-    curs1.close()
-    return application
+def  get_usapplicationcitation(db_connection,patent_id):
+
+    usapplicationcitation_array = []
+    query_usapplicationcitation="SELECT * FROM usapplicationcitation WHERE \
+    usapplicationcitation.patent_id=%s"
+    usapplicationcitation_cur=db_connection.cursor()
+    usapplicationcitation_cur.execute(query_usapplicationcitation,patent_id)
+
+    usapplicationcitation=usapplicationcitation_cur.fetchone()
+
+    while usapplicationcitation:
+        tmp_usapplicationcitation={}
+        tmp_usapplicationcitation["application_id"] = usapplicationcitation[2]
+        tmp_usapplicationcitation['date'] = usapplicationcitation[3]
+        tmp_usapplicationcitation['name'] =usapplicationcitation[4]
+        tmp_usapplicationcitation['kind'] =usapplicationcitation[5]
+        tmp_usapplicationcitation['number'] = usapplicationcitation[6]
+        tmp_usapplicationcitation['country'] = usapplicationcitation[7]
+        tmp_usapplicationcitation['category'] =usapplicationcitation[8]
+        tmp_usapplicationcitation['sequence'] = usapplicationcitation[9]
+
+        usapplicationcitation_array.append(tmp_usapplicationcitation)
+
+        usapplicationcitation=usapplicationcitation_cur.fetchone()
+
+    usapplicationcitation_cur.close()
+
+    return usapplicationcitation_array
 
 
-def getForeigncitation(patentId):
-    foreigncitation = []
-    sql1 = 'SELECT * FROM foreigncitation WHERE foreigncitation.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        f = {}
-        f['date'] = result1[2]
-        f['number'] = result1[3]
-        f['country'] = result1[4]
-        f['category'] = result1[5]
-        f['sequence'] = result1[6]
-        foreigncitation.append(f)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return foreigncitation
+def get_uspatentcitation(db_connection,patent_id):
+
+    uspatentcitation_array=[]
+    query_uspantentcitation="SELECT * FROM uspatentcitation WHERE \
+    uspantentcitation.patent_id=%s"
+
+    uspatentcitation_cur=db_connection.cursor()
+
+    uspatentcitation_cur.execute(query_uspantentcitation,patent_id)
+
+    uspatentcitation=uspatentcitation_cur.fetchone()
+
+    while uspatentcitation:
+        tmp_uspatentcitation={}
+        tmp_uspatentcitation['citation_id'] = uspatentcitation[2]
+        tmp_uspatentcitation['date'] = uspatentcitation[3]
+        tmp_uspatentcitation['name'] = uspatentcitation[4]
+        tmp_uspatentcitation['kind'] = uspatentcitation[5]
+        tmp_uspatentcitation['country'] = uspatentcitation[6]
+        tmp_uspatentcitation['category'] = uspatentcitation[7]
+        tmp_uspatentcitation['sequence'] = uspatentcitation[8]
+
+        uspatentcitation_array.append(tmp_uspatentcitation)
+
+        uspatentcitation=uspatentcitation_cur.fetchone()
+
+    uspatentcitation_cur.close()
+    return uspatentcitation_array
 
 
-def getUsapplicationcitation(patentId):
-    usapplicationcitation = []
-    sql1 = 'SELECT * FROM usapplicationcitation WHERE usapplicationcitation.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        u = {}
-        u['application_id'] = result1[2]
-        u['date'] = result1[3]
-        u['name'] = result1[4]
-        u['kind'] = result1[5]
-        u['number'] = result1[6]
-        u['country'] = result1[7]
-        u['category'] = result1[8]
-        u['sequence'] = result1[9]
-        usapplicationcitation.append(u)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return usapplicationcitation
+def get_otherreference(db_connection,patent_id):
+    otherreference_array=[]
+
+    query_otherreference="SELECT * FROM otherreference WHERE \
+    otherreference.patent_id=%s"
+
+    otherreference_cur=db_connection.cursor()
+
+    otherreference_cur.execute(query_otherreference,patent_id)
+
+    otherreference=otherreference_cur.fetchone()
+
+    while otherreference:
+        tmp_otherreference={}
+        tmp_otherreference['text'] = otherreference[2]
+        tmp_otherreference['sequence'] = otherreference[3]
+
+        otherreference_array.append(tmp_otherreference)
+        otherreference=otherreference_cur.fetchone()
+
+    otherreference_cur.close()
+
+    return otherreference_array
 
 
-def getUspatentcitation(patentId):
-    uspatentcitation = []
-    sql1 = 'SELECT * FROM uspatentcitation WHERE uspatentcitation.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        u = {}
-        u['citation_id'] = result1[2]
-        u['date'] = result1[3]
-        u['name'] = result1[4]
-        u['kind'] = result1[5]
-        u['country'] = result1[6]
-        u['category'] = result1[7]
-        u['sequence'] = result1[8]
-        uspatentcitation.append(u)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return uspatentcitation
+def get_usreldoc(db_connection,patent_id):
+
+    usreldoc_array=[]
+    query_usreldoc="SELECT * FROM usreldoc WHERE usreldoc.patent_id=%s"
+    usreldoc_cur=db_connection.cursor()
+    usreldoc_cur.execute(query_usreldoc,patent_id)
+    usreldoc=usreldoc_cur.fetchone()
+    while usreldoc:
+        tmp_usreldoc={}
+        tmp_usreldoc['rel_id'] = usreldoc[2]
+        tmp_usreldoc['doctype'] = usreldoc[3]
+        tmp_usreldoc['status'] = usreldoc[4]
+        tmp_usreldoc['date'] = usreldoc[5]
+        tmp_usreldoc['number'] = usreldoc[6]
+        tmp_usreldoc['kind'] = usreldoc[7]
+        tmp_usreldoc['country'] = usreldoc[8]
+        tmp_usreldoc['relationship'] = usreldoc[9]
+        tmp_usreldoc['sequence'] = usreldoc[10]
+
+        usreldoc_array.append(tmp_usreldoc)
+
+        usreldoc=usreldoc_cur.fetchone()
+
+    usreldoc_cur.close()
+
+    return usreldoc_array
 
 
-def getOtherreference(patentId):
-    otherreference = []
-    sql1 = 'SELECT * FROM otherreference WHERE otherreference.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        o = {}
-        o['text'] = result1[2]
-        o['sequence'] = result1[3]
-        otherreference.append(o)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return otherreference
+def get_ipcr(db_connection,patent_id):
+    ipcr_array = []
+    query_ipcr = "SELECT * FROM ipcr WHERE ipcr.patent_id=%s"
+    ipcr_cur=db_connection.cursor()
+    ipcr_cur.execute(query_ipcr,patent_id)
+    ipcr = ipcr_cur.fetchone()
+    while ipcr:
+        tmp_ipcr = {}
+        tmp_ipcr['classification_level'] = ipcr[2]
+        tmp_ipcr['section'] = ipcr[3]
+        tmp_ipcr['ipc_class'] = ipcr[4]
+        tmp_ipcr['subclass'] = ipcr[5]
+        tmp_ipcr['main_group'] = ipcr[6]
+        tmp_ipcr['subgroup'] = ipcr[7]
+        tmp_ipcr['symbol_position'] = ipcr[8]
+        tmp_ipcr['classification_value'] = ipcr[9]
+        tmp_ipcr['classification_status'] = ipcr[10]
+        tmp_ipcr['classification_data_source'] = ipcr[11]
+        tmp_ipcr['action_date'] = ipcr[12]
+        tmp_ipcr['ipc_version_indicator'] = ipcr[13]
+        tmp_ipcr['sequence'] = ipcr[14]
+        ipcr_array.append(tmp_ipcr)
+        ipcr = ipcr_cur.fetchone()
+    ipcr_cur.close()
+    return ipcr_array
 
 
-def getUsreldoc(patentId):
-    usreldoc = []
-    sql1 = 'SELECT * FROM usreldoc WHERE usreldoc.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        u = {}
-        u['rel_id'] = result1[2]
-        u['doctype'] = result1[3]
-        u['status'] = result1[4]
-        u['date'] = result1[5]
-        u['number'] = result1[6]
-        u['kind'] = result1[7]
-        u['country'] = result1[8]
-        u['relationship'] = result1[9]
-        u['sequence'] = result1[10]
-        usreldoc.append(u)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return usreldoc
+def get_uspc(db_connection,patent_id):
+    uspc_array=[]
+    query_uspc="SELECT * FROM uspc_current WHERE uspc_current.patent_id=%s"
+    uspc_cur=db_connection.cursor()
+
+    uspc_cur.execute(query_uspc,patent_id)
+    uspc=uspc_cur.fetchone()
+    while uspc:
+        tmp_uspc={}
+
+        query_mainclass_current="SELECT * FROM mainclass_current WHERE id=%"
+        mainclass_current_cur=db_connection.cursor()
+        mainclass_current_cur.execute(query_mainclass_current,uspc[2])
+        mainclass_current=mainclass_current_cur.fetchone()
+
+        tmp_mainclass_current={}
+        if mainclass_current:
+            tmp_mainclass_current["title"]=mainclass_current[1]
+        tmp_uspc["mainclass"]=tmp_mainclass_current
+        mainclass_current_cur.close()
+
+        query_subclass_current = "SELECT * FROM subclass_current WHERE id=%"
+        subclass_current_cur = db_connection.cursor()
+        subclass_current_cur.execute(query_subclass_current, uspc[3])
+        subclass_current = subclass_current_cur.fetchone()
+
+        tmp_subclass_current = {}
+        if subclass_current:
+            tmp_subclass_current["title"] = subclass_current[1]
+        tmp_uspc["subclass"] = tmp_subclass_current
+        subclass_current_cur.close()
+        uspc_array.append(tmp_uspc)
+        uspc=uspc_cur.fetchone()
+    uspc_cur.close()
+    return uspc_array
 
 
-def getIpcr(patentId):
-    ipcr = []
-    sql1 = 'SELECT * FROM ipcr WHERE ipcr.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        i = {}
-        i['classification_level'] = result1[2]
-        i['section'] = result1[3]
-        i['ipc_class'] = result1[4]
-        i['subclass'] = result1[5]
-        i['main_group'] = result1[6]
-        i['subgroup'] = result1[7]
-        i['symbol_position'] = result1[8]
-        i['classification_value'] = result1[9]
-        i['classification_status'] = result1[10]
-        i['classification_data_source'] = result1[11]
-        i['action_date'] = result1[12]
-        i['ipc_version_indicator'] = result1[13]
-        i['sequence'] = result1[14]
-        ipcr.append(i)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return ipcr
+def get_nber(db_connection,patent_id):
+
+    nber_array=[]
+    query_nber="SELECT * FROM nber WHERE nber.patent_id=%s"
+
+    nber_cur=db_connection.cursor()
+    nber_cur.execute(query_nber,patent_id)
+    nber=nber_cur.fetchone()
+
+    while nber:
+        tmp_nber={}
+
+        query_nber_category="SELECT * FROM nber_category WHERE id=%s"
+        nber_category_cur=db_connection.cursor()
+        nber_category_cur.execute(query_nber_category,nber[2])
+
+        nber_category=nber_category_cur.fetchone()
+
+        tmp_category={}
+        if nber_category:
+            tmp_category["title"]=nber_category[1]
+        tmp_nber["category"]=tmp_category
+        nber_category_cur.close()
+
+        query_nber_category = "SELECT * FROM nber_category WHERE id=%s"
+        nber_category_cur = db_connection.cursor()
+        nber_category_cur.execute(query_nber_category, nber[2])
+
+        nber_category = nber_category_cur.fetchone()
+
+        tmp_category = {}
+        if nber_category:
+            tmp_category["title"] = nber_category[1]
+        tmp_nber["category"] = tmp_category
+        nber_category_cur.close()
+
+        query_nber_subcategory = "SELECT * FROM nber_subcategory WHERE id=%s"
+        nber_subcategory_cur = db_connection.cursor()
+        nber_subcategory_cur.execute(query_nber_subcategory, nber[3])
+
+        nber_subcategory = nber_subcategory_cur.fetchone()
+
+        tmp_subcategory = {}
+        if nber_subcategory:
+            tmp_subcategory["title"] = nber_subcategory[1]
+        tmp_nber["subcategory"] = tmp_subcategory
+        nber_subcategory_cur.close()
+        nber_array.append(tmp_nber)
+
+        nber=nber_cur.fetchone()
+    nber_cur.close()
+
+    return  nber_array
 
 
-def getUspc(patentId):
-    uspc = []
-    sql1 = 'SELECT * FROM uspc_current WHERE uspc_current.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        u = {}
-        u['sequence'] = result1[3]
-        # 得到mainclass
-        sql2 = 'SELECT * FROM mainclass_current WHERE id="' + result1[2] + '"'
-        curs2 = conn.cursor()
-        curs2.execute(sql2)
-        result2 = curs2.fetchone()
-        mainclass = {}
-        if result2:
-            mainclass['title'] = result2[1]
-        u['mainclass'] = mainclass
-        curs2.close()
-        #得到subclass
-        sql3 = 'SELECT * FROM subclass_current WHERE id="' + result1[3] + '"'
-        curs3 = conn.cursor()
-        curs3.execute(sql3)
-        result3 = curs3.fetchone()
-        subclass = {}
-        if result3:
-            subclass['title'] = result3[1]
-        u['subclass'] = subclass
-        curs3.close()
-        uspc.append(u)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return uspc
+def get_cpc(db_connection,patent_id):
 
+    cpc_array=[]
+    query_cpc="SELECT * FROM cpc_current WHERE cpc_current.patent_id=%s"
 
-def getNber(patentId):
-    nber = []
-    sql1 = 'SELECT * FROM nber WHERE nber.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        n = {}
-        # 得到category
-        sql2 = 'SELECT * FROM nber_category WHERE id="' + result1[2] + '"'
-        curs2 = conn.cursor()
-        curs2.execute(sql2)
-        result2 = curs2.fetchone()
-        category = {}
-        if result2:
-            category['title'] = result2[1]
-        n['category'] = category
-        curs2.close()
-        #得到subcategory
-        sql3 = 'SELECT * FROM nber_subcategory WHERE id="' + result1[3] + '"'
-        curs3 = conn.cursor()
-        curs3.execute(sql3)
-        result3 = curs3.fetchone()
-        subcategory = {}
-        if result3:
-            subcategory['title'] = result3[1]
-        n['subcategory'] = subcategory
-        curs3.close()
-        nber.append(n)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return nber
+    cpc_cur=db_connection.cursor()
+    cpc_cur.execute(query_cpc,patent_id)
+    cpc=cpc_cur.fetchone()
+    while cpc:
+        tmp_cpc={}
+        tmp_cpc['section_id'] = cpc[2]
+        tmp_cpc['category'] = cpc[6]
+        tmp_cpc['sequence'] = cpc[7]
+        # get subsection
+        query_subsection="SELECT * FROM cpc_subsection WHERE id=%s"
+        subsection_cur=db_connection.cursor()
+        subsection_cur.execute(query_subsection,cpc[3])
+        subsection=subsection_cur.fetchone()
 
+        tmp_subsection={}
+        if subsection:
+            tmp_subsection["title"]=subsection[1]
+        tmp_cpc["subsection"]=tmp_subsection
+        subsection_cur.close()
 
-def getCpc(patentId):
-    cpc = []
-    sql1 = 'SELECT * FROM cpc_current WHERE cpc_current.patent_id="' + patentId + '"'
-    curs1 = conn.cursor()
-    curs1.execute(sql1)
-    result1 = curs1.fetchone()
-    while result1:
-        c = {}
-        c['section_id'] = result1[2]
-        c['category'] = result1[6]
-        c['sequence'] = result1[7]
-        # 得到subsection
-        sql2 = 'SELECT * FROM cpc_subsection WHERE id="' + result1[3] + '"'
-        curs2 = conn.cursor()
-        curs2.execute(sql2)
-        result2 = curs2.fetchone()
-        subsection = {}
-        if result2:
-            subsection['title'] = result2[1]
-        c['subsection'] = subsection
-        curs2.close()
-        #得到group
-        sql3 = 'SELECT * FROM cpc_group WHERE id="' + result1[4] + '"'
-        curs3 = conn.cursor()
-        curs3.execute(sql3)
-        result3 = curs3.fetchone()
-        group = {}
-        if result3:
-            group['title'] = result3[1]
-        c['group'] = group
-        curs3.close()
-        # 得到subgroup
-        sql4 = 'SELECT * FROM cpc_subgroup WHERE id="' + result1[5] + '"'
-        curs4 = conn.cursor()
-        curs4.execute(sql4)
-        result4 = curs4.fetchone()
-        subgroup = {}
-        if result4:
-            subgroup['title'] = result4[1]
-        c['subgroup'] = subgroup
-        curs3.close()
-        cpc.append(c)
-        result1 = curs1.fetchone()
-    curs1.close()
-    return cpc
+        query_groub = "SELECT * FROM cpc_groub WHERE id=%s"
+        groub_cur = db_connection.cursor()
+        groub_cur.execute(query_groub, cpc[4])
+        groub = groub_cur.fetchone()
 
+        tmp_groub = {}
+        if groub:
+            tmp_groub["title"] = groub[1]
+        tmp_cpc["groub"] = tmp_groub
+        groub_cur.close()
+        # get subgroup
+        query_subgroub = "SELECT * FROM cpc_subgroub WHERE id=%s"
+        subgroub_cur = db_connection.cursor()
+        subgroub_cur.execute(query_subgroub, cpc[5])
+        subgroub = subgroub_cur.fetchone()
+
+        tmp_subgroub = {}
+        if subgroub:
+            tmp_subgroub["title"] = subgroub[1]
+        tmp_cpc["subgroub"] = tmp_subgroub
+        subgroub_cur.close()
+        cpc_array.append(tmp_cpc)
+        cpc=cpc_cur.fetchone()
+    cpc_cur.close()
+
+    return cpc_array
 
 if __name__ == '__main__':
     conn = pymysql.Connect(host='127.0.0.1', port=3306, user='root', passwd='', db='patent2', charset='utf8')
