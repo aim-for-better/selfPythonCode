@@ -9,4 +9,4 @@ def getLastLineFile(file):
 
 file=open("../company_url_file.txt","r")
 file2=open("D:/patentsviewdata/tsvfile/nber.tsv")
-print getLastLineFile(file2)
+print getLastLineFile(file)
