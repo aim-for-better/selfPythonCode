@@ -498,7 +498,7 @@ if __name__ == "__main__":
                 d[des[i][0]] = patent[i]
 
 
-            print "the patent_id is %s", d["id"]
+            # print "the patent_id is %s", d["id"]
 
             inventor=get_inventor(conn,d["id"])
             d["inventor"]=inventor
@@ -527,15 +527,15 @@ if __name__ == "__main__":
             cpc = get_cpc(conn,d["id"])
             d["cpc"] = cpc
 
-            print d
-            if count>1:
-                break
+            # print d
+            # if count>1:
+            #     break
             # j = json.dumps(d, cls=MyEncoder)
             # j = json.dumps(d, default=json_serial)
             j=json.dumps(d)
-            index = {"index":{}}
-            index = json.dumps(index)
-            file.write(index+"\n")
+            # index = {"index":{}}
+            # index = json.dumps(index)
+            # file.write(index+"\n")
             file.write(j+"\n")
             patent = patent_cur.fetchone()
         patent_cur.close()
